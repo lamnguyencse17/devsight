@@ -1,66 +1,50 @@
-import React, {useState, useRef, useEffect} from 'react'
-import { draftToMarkdown } from 'markdown-draft-js';
-import {EditorState, convertToRaw, Editor} from 'draft-js';
-import remarkGfm from 'remark-gfm'
-import MarkdownView from 'react-showdown';
+import React, {useState} from 'react'
+import {EditorState, convertToRaw} from 'draft-js';
+import { draftjsToMd } from 'draftjs-md-converter';
 import styled from "styled-components";
+import 'draft-js/dist/Draft.css'
+import EditorPreview from './Editor/EditorPreview';
+import EditorWriter from './Editor/EditorWriter';
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   height: fit-content;
-  margin-top: 3em;
+  padding: 0 5px 0 5px;
 `;
 
-const EditorContainer = styled.div`
-  display: flex;
-  min-height: 9em;
-  width: 50%;
-  border-radius: 0 0 3px 3px;
-  background-color: #fff;
-  padding: 5px;
-  font-size: 17px;
-  font-weight: 300;
-  box-shadow: 0px 0px 3px 1px rgba(15, 15, 15, 0.17);
-`;
+const ContentLabel = styled.label`
+margin-top: 1em
+`
+
+const PreviewLabel = styled.label`
+margin-top: 3em
+`
 
 const EditorWrapper = () => {
     const [editorState, setEditorState] = useState(
         EditorState.createEmpty()
     );
-    const [markdownContent, setMarkdownContent] = useState('')
-    const editor = useRef<Editor | null>(null);
-
-    const focusEditor = () => {
-        editor?.current?.focus();
+    const [title, setTitle] = useState('')
+    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value)
     }
-
-    useEffect(() => {
-        focusEditor()
-    }, []);
-
-    useEffect(() => {
-        console.log(markdownContent)
-    }, [markdownContent]);
+    const [markdownContent, setMarkdownContent] = useState('')
 
     const handleEditorStateChange = (editorState: EditorState) => {
         setEditorState(editorState)
         const content = editorState.getCurrentContent()
         const rawObject = convertToRaw(content)
-        setMarkdownContent(draftToMarkdown(rawObject, {preserveNewlines: true}))
+        setMarkdownContent(draftjsToMd(rawObject))
     }
     return <Wrapper>
-        <EditorContainer onClick={focusEditor}>
-            <Editor
-                ref={editor}
-                editorState={editorState}
-                onChange={editorState => handleEditorStateChange(editorState)}
-            />
-        </EditorContainer>
-        <EditorContainer>
-            <MarkdownView markdown={markdownContent}/>
-        </EditorContainer>
+        <label>Title</label>
+        <input value={title} onChange={handleChangeTitle}/>
+        <ContentLabel>Content</ContentLabel>
+        <EditorWriter editorState={editorState} handleEditorStateChange={handleEditorStateChange}/>
+        <PreviewLabel>Preview</PreviewLabel>
+        <EditorPreview markdownContent={markdownContent}/>
     </Wrapper>
 }
 
