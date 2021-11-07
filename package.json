@@ -8,17 +8,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.6.1",
+    "axios": "^0.24.0",
     "draft-js": "^0.11.7",
     "draftjs-md-converter": "^1.5.1",
+    "google-auth-library": "^7.10.2",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "mobx": "^6.3.6",
+    "mobx-react": "^7.2.1",
+    "mongoose": "^6.0.12",
     "next": "12.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-showdown": "^2.3.1",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/gapi.auth2": "^0.0.55",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/lodash": "^4.14.176",
     "@types/markdown-draft-js": "^2.2.4",
     "@types/node": "16.11.6",
