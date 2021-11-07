@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken'
 import logger from "../../../utils/logger";
 import {verifyGoogleAndFindUser, verifyTokenAndFindUser} from "@services/auth";
 import LocalToken from "../../../common/api/token";
+import isEmpty from "lodash/isEmpty";
+import {createUser} from "@services/user";
 const {OAuth2Client} = require('google-auth-library');
 
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -50,6 +52,12 @@ export default async function handler(
                 const payload = ticket.getPayload();
                 const email = payload['email'];
                 const user = await verifyGoogleAndFindUser(email)
+                if (isEmpty(user)) {
+                    const name = payload['name']
+                    const picture = payload['picture']
+                    const newUser = await createUser({email, name, avatar: picture})
+                    return res.status(200).json({code: 200, payload: newUser})
+                }
                 return res.status(200).json({code: 200, payload: user})
             } catch (err) {
                 logger.info(err)

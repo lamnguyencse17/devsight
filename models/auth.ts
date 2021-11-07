@@ -4,7 +4,9 @@ import Auth from "./interfaces/auth";
 const AuthSchema = new Schema({
     email: {type: String, required: true},
     user: {type: mongoose.Types.ObjectId, required: true, ref: 'User'},
-    avatar: {type: String, required: true}
+    googleId: {type: String},
+    password: {type: String},
+    token: {type: String}
 })
 
 AuthSchema.index({
@@ -12,7 +14,7 @@ AuthSchema.index({
 })
 
 AuthSchema.index({
-    userId: 1,
+    email: 1,
     password: 1
 }, {unique: true})
 
