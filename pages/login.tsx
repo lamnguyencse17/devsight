@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {NextPage} from "next";
+import {authenticateGoogle} from "../requests/auth";
 
 declare global {
     interface Window {
@@ -11,8 +12,9 @@ const Login: NextPage = () => {
     useEffect(() => {
         window.handleGoogleAuth = handleGoogleAuth
     }, []);
-    const handleGoogleAuth = (response: any) => {
-        console.log(response)
+    const handleGoogleAuth = async (response: any) => {
+        const result = await authenticateGoogle(response.credential)
+        console.log(result)
     }
     return <>
         <div id="g_id_onload"

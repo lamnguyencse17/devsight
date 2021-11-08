@@ -3,14 +3,9 @@ import Auth from "./interfaces/auth";
 
 const AuthSchema = new Schema({
     email: {type: String, required: true},
-    user: {type: mongoose.Types.ObjectId, required: true, ref: 'User'},
-    googleId: {type: String},
+    user: {type: mongoose.Types.ObjectId, ref: 'User'},
     password: {type: String},
-    token: {type: String}
-})
-
-AuthSchema.index({
-    email: 1,
+    token: {type: String, required: true}
 })
 
 AuthSchema.index({
@@ -23,6 +18,4 @@ AuthSchema.index({
     token: 1
 }, {unique: true})
 
-const AuthModel = model<Auth>('User', AuthSchema);
-
-export default mongoose.models.Auth || AuthModel
+export default mongoose.models.Auth || model<Auth>('Auth', AuthSchema);

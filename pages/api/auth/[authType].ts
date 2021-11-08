@@ -3,10 +3,17 @@ import connectMongoDB from "../../../lib/connectMongoDB";
 import {Response} from "../../../common/api/response";
 import jwt from 'jsonwebtoken'
 import logger from "../../../utils/logger";
-import {verifyGoogleAndFindUser, verifyTokenAndFindUser} from "@services/auth";
+import {
+    createNewAuth,
+    generateToken,
+    updateUserForNewGoogle,
+    verifyGoogleAndFindUser,
+    verifyTokenAndFindUser
+} from "@services/auth";
 import LocalToken from "../../../common/api/token";
 import isEmpty from "lodash/isEmpty";
 import {createUser} from "@services/user";
+import {serialize} from "cookie";
 const {OAuth2Client} = require('google-auth-library');
 
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -50,20 +57,26 @@ export default async function handler(
                     audience: process.env.GOOGLE_CLIENT_ID,
                 });
                 const payload = ticket.getPayload();
-                const email = payload['email'];
+                console.log(payload)
+                const email = payload['email'] as string;
                 const user = await verifyGoogleAndFindUser(email)
                 if (isEmpty(user)) {
                     const name = payload['name']
                     const picture = payload['picture']
                     const newUser = await createUser({email, name, avatar: picture})
-                    return res.status(200).json({code: 200, payload: newUser})
+                    const generatedToken = await createNewAuth({email, user: newUser._id})
+                    res.setHeader('Set-Cookie', serialize('token', generatedToken, {httpOnly: true, secure: true, sameSite: true, maxAge: 3600*1000*2}))
+                    return res.status(200).json({code: 200, payload: {user: newUser, token: generatedToken}})
                 }
-                return res.status(200).json({code: 200, payload: user})
+                const generatedToken = generateToken(user.email, user._id)
+                res.setHeader('Set-Cookie', serialize('token', generatedToken, {httpOnly: true, secure: true, sameSite: true, maxAge: 3600*1000*2}))
+                return res.status(200).json({code: 200, payload: {user, token: generatedToken}})
             } catch (err) {
-                logger.info(err)
                 if (err instanceof Error) {
+                    logger.info(err.message)
                     return res.status(401).json({code: 401, message: err.message})
                 }
+                logger.error(err)
                 return res.status(500).json({code: 500, message: 'Service is not available'})
             }
 

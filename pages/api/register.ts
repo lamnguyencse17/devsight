@@ -15,7 +15,7 @@ export default async function handler(
         await connectMongoDB()
         const avatar = `https://ui-avatars.com/api/?name=${name}`
         const newUser = await createUser({name, email, avatar})
-        const token = await createNewAuth({email, password, userId: newUser._id})
+        const token = await createNewAuth({email, password, user: newUser._id})
         return res.status(200).json({code: 200, payload: {user: newUser, token}})
     } catch (err) {
         logger.info(err)

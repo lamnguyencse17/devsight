@@ -1,5 +1,7 @@
+import mongoose from "mongoose";
+
 export interface newAuthData {
-    password: string;
+    password?: string;
     email: string;
-    userId: string;
+    user: mongoose.Types.ObjectId;
 }

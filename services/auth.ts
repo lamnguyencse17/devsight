@@ -13,7 +13,7 @@ export interface IUserFoundWithToken extends Omit<LeanDocument<Auth>, 'user'> {
 }
 
 export const verifyTokenAndFindUser = async (token: string, userId: string): Promise<IUserFoundWithToken> => {
-    const user = await AuthModel.findOne({user: userId, token}).populate('userId').lean()
+    const user = await AuthModel.findOne({user: userId, token}).populate('user').lean()
     if (isEmpty(user)) {
         throw new Error('No match credential found')
     }
@@ -21,7 +21,7 @@ export const verifyTokenAndFindUser = async (token: string, userId: string): Pro
 }
 
 export const verifyGoogleAndFindUser = async (email: string): Promise<IUserFoundWithToken> => {
-    return AuthModel.findOne({email}).populate('userId').lean()
+    return AuthModel.findOne({email}).populate('user').lean()
 }
 
 export const createNewAuth = async (authData: newAuthData): Promise<string> => {
@@ -29,11 +29,24 @@ export const createNewAuth = async (authData: newAuthData): Promise<string> => {
         logger.error('NO BCRYPT_ROUND FOUND')
         throw new Error('NO BCRYPT_ROUND FOUND')
     }
-    const hashedPassword = await bcrypt.hash(authData.password, process.env.BCRYPT_ROUND)
-    await AuthModel.create({...authData, password: hashedPassword, userId: mongoose.Types.ObjectId.createFromHexString(authData.userId)})
+    const token = generateToken(authData.email, authData.user)
+    if (authData.password && !authData.googleId) {
+        const hashedPassword = await bcrypt.hash(authData.password, process.env.BCRYPT_ROUND)
+        await AuthModel.create({...authData, password: hashedPassword, user: authData.user, token})
+    } else {
+        await AuthModel.create({...authData, user: authData.user, token})
+    }
+    return token
+}
+
+export const updateUserForNewGoogle = (email: string, userId: string): void => {
+    AuthModel.updateOne({email}, {userId: mongoose.Types.ObjectId.createFromHexString(userId)});
+}
+
+export const generateToken = (email: string, userId: mongoose.Types.ObjectId): string => {
     if (!process.env.TOKEN_SECRET) {
         logger.error('NO TOKEN_SECRET provided')
         throw new Error('NO TOKEN_SECRET provided')
     }
-    return jwt.sign({userId: authData.userId, email: authData.email}, process.env.TOKEN_SECRET)
+    return jwt.sign({userId: userId.toString(), email}, process.env.TOKEN_SECRET)
 }

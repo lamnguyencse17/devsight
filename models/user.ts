@@ -11,6 +11,4 @@ UserSchema.index({
     email: 1,
 }, {unique: true})
 
-const UserModel = model<User>('User', UserSchema);
-
-export default mongoose.models.User || UserModel
+export default mongoose.models.User || model<User>('User', UserSchema);
