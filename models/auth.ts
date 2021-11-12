@@ -14,7 +14,7 @@ AuthSchema.index({
 }, {unique: true})
 
 AuthSchema.index({
-    userId: 1,
+    user: 1,
     token: 1
 }, {unique: true})
 

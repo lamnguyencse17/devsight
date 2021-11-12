@@ -30,7 +30,7 @@ export const createNewAuth = async (authData: newAuthData): Promise<string> => {
         throw new Error('NO BCRYPT_ROUND FOUND')
     }
     const token = generateToken(authData.email, authData.user)
-    if (authData.password && !authData.googleId) {
+    if (authData.password) {
         const hashedPassword = await bcrypt.hash(authData.password, process.env.BCRYPT_ROUND)
         await AuthModel.create({...authData, password: hashedPassword, user: authData.user, token})
     } else {

@@ -21,7 +21,11 @@
     "baseUrl": ".",
     "paths": {
       "@models/*": ["models/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"],
+      "@controllers/*": ["controllers/*"],
+      "@common/*": ["common/*"],
+      "@lib/*": ["lib/*"]
     }
   },
   "include": [
