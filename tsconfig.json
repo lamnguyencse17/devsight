@@ -25,7 +25,8 @@
       "@utils/*": ["utils/*"],
       "@controllers/*": ["controllers/*"],
       "@common/*": ["common/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@validators/*": ["validators/*"]
     }
   },
   "include": [
@@ -36,5 +37,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }

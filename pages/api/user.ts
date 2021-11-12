@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import connectMongoDB from "../../lib/connectMongoDB";
+import connectMongoDB from "@lib/connectMongoDB";
 
 type Data = {
     name: string

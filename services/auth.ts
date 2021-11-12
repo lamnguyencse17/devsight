@@ -39,14 +39,10 @@ export const createNewAuth = async (authData: newAuthData): Promise<string> => {
     return token
 }
 
-export const updateUserForNewGoogle = (email: string, userId: string): void => {
-    AuthModel.updateOne({email}, {userId: mongoose.Types.ObjectId.createFromHexString(userId)});
-}
-
 export const generateToken = (email: string, userId: mongoose.Types.ObjectId): string => {
     if (!process.env.TOKEN_SECRET) {
         logger.error('NO TOKEN_SECRET provided')
         throw new Error('NO TOKEN_SECRET provided')
     }
-    return jwt.sign({userId: userId.toString(), email}, process.env.TOKEN_SECRET)
+    return jwt.sign({userId: userId.toString(), email}, process.env.TOKEN_SECRET, {expiresIn: '24h'})
 }

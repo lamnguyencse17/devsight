@@ -18,18 +18,24 @@ export default async function handler(
     res: NextApiResponse<Response>
 ) {
     const {authType} = req.query;
-    await connectMongoDB()
-    switch (authType) {
-        case LOCAL_AUTH: {
-            await handleLocalAuth(req, res)
-            return
+    try {
+        await connectMongoDB()
+        switch (authType) {
+            case LOCAL_AUTH: {
+                await handleLocalAuth(req, res)
+                return
+            }
+            case GOOGLE_AUTH: {
+                await handleGoogleAuth(req, res)
+                return;
+            }
+            default: {
+                return res.status(200).json({ code: 401, message: 'Auth type is not supported' })
+            }
         }
-        case GOOGLE_AUTH: {
-            await handleGoogleAuth(req, res)
-            return;
-        }
-        default: {
-            return res.status(200).json({ code: 401, message: 'Auth type is not supported' })
-        }
+    } catch (err) {
+        logger.error(err)
+        return res.status(500).json({ code: 500, message: 'Service is not available' })
     }
+
 }
