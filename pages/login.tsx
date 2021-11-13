@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react'
 import {NextPage} from "next";
 import {authenticateGoogle} from "../requests/auth";
+import Script from "next/script";
 
 declare global {
     interface Window {
         handleGoogleAuth: (response: any) => void;
+        FB: any
     }
 }
 
@@ -14,7 +16,6 @@ const Login: NextPage = () => {
     }, []);
     const handleGoogleAuth = async (response: any) => {
         const result = await authenticateGoogle(response.credential)
-        console.log(result)
     }
     return <>
         <div id="g_id_onload"
@@ -30,6 +31,8 @@ const Login: NextPage = () => {
              data-shape="rectangular"
              data-logo_alignment="left">
         </div>
+        <div className="fb-login-button" data-width="100" data-size="large" data-button-type="login_with"
+    data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"/>
     </>
 }
 

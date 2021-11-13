@@ -1,12 +1,14 @@
 import React from "react";
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import dynamic from "next/dynamic";
-const AppScript = dynamic(() => import('../components/AppScript'), {ssr: false})
+import {useRouter} from "next/router";
+import AuthScript from '../components/AuthScript'
 
 function MyApp({ Component, pageProps }: AppProps) {
+    const {pathname} = useRouter()
+
   return <>
-      <AppScript/>
+      {(pathname === '/login' || pathname === '/register') && <AuthScript/>}
       <Component {...pageProps} />
   </>
 }

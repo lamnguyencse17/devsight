@@ -30,7 +30,6 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie": "^0.4.1",
-    "@types/gapi.auth2": "^0.0.55",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/lodash": "^4.14.176",
     "@types/markdown-draft-js": "^2.2.4",
