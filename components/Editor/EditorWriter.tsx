@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react'
-import {Editor, EditorState} from "draft-js";
-import styled from "styled-components";
+import {Editor, EditorState} from 'draft-js';
+import styled from 'styled-components';
 
 const EditorContainer = styled.div`
   width:100%;

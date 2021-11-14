@@ -1,8 +1,8 @@
-import {NextApiRequest, NextApiResponse} from "next";
-import connectMongoDB from "@lib/connectMongoDB";
-import {Response} from "@common/api/response";
-import logger from "@utils/logger";
-import {handleLocalAuth, handleGoogleAuth} from '@controllers/auth'
+import {NextApiRequest, NextApiResponse} from 'next';
+import connectMongoDB from '@lib/connectMongoDB';
+import {Response} from '@common/api/response';
+import logger from '@utils/logger';
+import {handleGoogleAuth, handleLocalAuth} from '@controllers/auth'
 
 
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -30,12 +30,12 @@ export default async function handler(
                 return;
             }
             default: {
-                return res.status(200).json({ code: 401, message: 'Auth type is not supported' })
+                return res.status(200).json({code: 401, message: 'Auth type is not supported'})
             }
         }
     } catch (err) {
         logger.error(err)
-        return res.status(500).json({ code: 500, message: 'Service is not available' })
+        return res.status(500).json({code: 500, message: 'Service is not available'})
     }
 
 }

@@ -1,32 +1,20 @@
-import {createNewAuth, generateToken, verifyAndFindUser} from "@services/auth";
-import isEmpty from "lodash/isEmpty";
-import {createUser} from "@services/user";
-import {serialize} from "cookie";
-import logger from "@utils/logger";
 import {NextApiRequest, NextApiResponse} from "next";
 import {Response} from "@common/api/response";
-import {OAuth2Client} from "google-auth-library";
-
-
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+import {authPayloadSchema} from "@validators/auth";
+import {createNewAuth, generateToken, verifyAndFindUser, verifyFacebookToken} from "@services/auth";
+import isEmpty from "lodash/isEmpty";
+import {createUser, getFacebookProfilePicture} from "@services/user";
+import {serialize} from "cookie";
+import logger from "@utils/logger";
 
 export default async (req: NextApiRequest,
                       res: NextApiResponse<Response>) => {
-    const token = req.body.token
     try {
-        const ticket = await googleClient.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID,
-        });
-        const payload = ticket.getPayload();
-        if (!payload) {
-            return res.status(401).json({code: 401, message: 'Google credential is not found'})
-        }
-        const email = payload['email'] as string;
+        const {token} = await authPayloadSchema.validate(req.body)
+        const {email, name} = await verifyFacebookToken(token);
         const user = await verifyAndFindUser(email)
         if (isEmpty(user)) {
-            const name = payload['name'] as string;
-            const picture = payload['picture'] as string;
+            const picture = await getFacebookProfilePicture(token)
             const newUser = await createUser({email, name, avatar: picture})
             const generatedToken = await createNewAuth({email, user: newUser._id})
             res.setHeader('Set-Cookie', serialize('token', generatedToken, {

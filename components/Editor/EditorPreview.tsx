@@ -1,6 +1,6 @@
 import React from 'react'
-import MarkdownView from "react-showdown";
-import styled from "styled-components";
+import MarkdownView from 'react-showdown';
+import styled from 'styled-components';
 
 interface EditorPreviewProps {
     markdownContent: string

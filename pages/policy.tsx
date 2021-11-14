@@ -1,5 +1,5 @@
 import React from 'react'
-import {NextPage} from "next";
+import {NextPage} from 'next';
 
 const Policy: NextPage = () => {
     return <div>

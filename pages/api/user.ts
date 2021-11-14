@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import connectMongoDB from "@lib/connectMongoDB";
+import type {NextApiRequest, NextApiResponse} from 'next'
+import connectMongoDB from '@lib/connectMongoDB';
 
 type Data = {
     name: string
@@ -10,5 +10,5 @@ export default async function handler(
     res: NextApiResponse<Data>
 ) {
     await connectMongoDB()
-    return res.status(200).json({ name: 'John Doe' })
+    return res.status(200).json({name: 'John Doe'})
 }

@@ -6,4 +6,5 @@ export const registerUserSchema = yup.object({
     password: yup.string().defined().required().length(8)
 })
 
-export interface registerUserData extends yup.Asserts<typeof registerUserSchema>{}
+export interface registerUserData extends yup.Asserts<typeof registerUserSchema> {
+}

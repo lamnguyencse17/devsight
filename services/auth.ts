@@ -3,10 +3,11 @@ import {isEmpty} from "lodash";
 import mongoose, {LeanDocument} from "mongoose";
 import Auth from "@models/interfaces/auth";
 import User from "@models/interfaces/user";
-import {newAuthData} from "@services/interfaces/auth";
+import {FacebookResponse, NewAuthData} from "@services/interfaces/auth";
 import bcrypt from 'bcryptjs'
 import logger from "../utils/logger";
 import jwt from 'jsonwebtoken'
+import axios from "axios";
 
 export interface IUserFoundWithToken extends Omit<LeanDocument<Auth>, 'user'> {
     user?: LeanDocument<User>
@@ -20,12 +21,12 @@ export const verifyTokenAndFindUser = async (token: string, userId: string): Pro
     return user
 }
 
-export const verifyGoogleAndFindUser = async (email: string): Promise<IUserFoundWithToken> => {
+export const verifyAndFindUser = async (email: string): Promise<IUserFoundWithToken> => {
     return AuthModel.findOne({email}).populate('user').lean()
 }
 
-export const createNewAuth = async (authData: newAuthData): Promise<string> => {
-    if (!process.env.BCRYPT_ROUND){
+export const createNewAuth = async (authData: NewAuthData): Promise<string> => {
+    if (!process.env.BCRYPT_ROUND) {
         logger.error('NO BCRYPT_ROUND FOUND')
         throw new Error('NO BCRYPT_ROUND FOUND')
     }
@@ -45,4 +46,14 @@ export const generateToken = (email: string, userId: mongoose.Types.ObjectId): s
         throw new Error('NO TOKEN_SECRET provided')
     }
     return jwt.sign({userId: userId.toString(), email}, process.env.TOKEN_SECRET, {expiresIn: '24h'})
+}
+
+export const verifyFacebookToken = async (token: string): Promise<{ name: string, email: string }> => {
+    const {
+        data: {
+            name,
+            email
+        }
+    } = await axios.get<FacebookResponse>(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`)
+    return {name, email}
 }

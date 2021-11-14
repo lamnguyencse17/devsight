@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import {EditorState, convertToRaw} from 'draft-js';
-import { draftjsToMd } from 'draftjs-md-converter';
-import styled from "styled-components";
+import {convertToRaw, EditorState} from 'draft-js';
+import {draftjsToMd} from 'draftjs-md-converter';
+import styled from 'styled-components';
 import 'draft-js/dist/Draft.css'
 import EditorPreview from './Editor/EditorPreview';
 import EditorWriter from './Editor/EditorWriter';
