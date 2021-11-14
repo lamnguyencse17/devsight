@@ -2,7 +2,7 @@ import {NextApiRequest, NextApiResponse} from 'next';
 import connectMongoDB from '@lib/connectMongoDB';
 import {Response} from '@common/api/response';
 import logger from '@utils/logger';
-import {handleGoogleAuth, handleLocalAuth} from '@controllers/auth'
+import {handleFacebookAuth, handleGoogleAuth, handleLocalAuth} from '@controllers/auth'
 
 
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -12,6 +12,7 @@ if (!process.env.GOOGLE_CLIENT_ID) {
 
 const LOCAL_AUTH = 'local'
 const GOOGLE_AUTH = 'google'
+const FACEBOOK_AUTH = 'facebook'
 
 export default async function handler(
     req: NextApiRequest,
@@ -27,6 +28,10 @@ export default async function handler(
             }
             case GOOGLE_AUTH: {
                 await handleGoogleAuth(req, res)
+                return;
+            }
+            case FACEBOOK_AUTH: {
+                await handleFacebookAuth(req, res)
                 return;
             }
             default: {
