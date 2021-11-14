@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const authenticateGoogle = async (token: string) => {
     try {

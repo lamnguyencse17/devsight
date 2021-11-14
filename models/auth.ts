@@ -1,5 +1,5 @@
 import mongoose, {model, Schema} from 'mongoose';
-import Auth from "./interfaces/auth";
+import Auth from './interfaces/auth';
 
 const AuthSchema = new Schema({
     email: {type: String, required: true},

@@ -15,7 +15,7 @@ const EditorPreviewContainer = styled.div`
   padding: 1em;
   font-size: 16px;
   font-weight: 300;
-  box-shadow: 0px 0px 3px 1px rgba(15, 15, 15, 0.17);
+  box-shadow: 0 0 3px 1px rgba(15, 15, 15, 0.17);
 `;
 
 const EditorPreview = ({markdownContent}: EditorPreviewProps) => {

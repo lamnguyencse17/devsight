@@ -1,13 +1,13 @@
 import AuthModel from '@models/auth'
-import {isEmpty} from "lodash";
-import mongoose, {LeanDocument} from "mongoose";
-import Auth from "@models/interfaces/auth";
-import User from "@models/interfaces/user";
-import {FacebookResponse, NewAuthData} from "@services/interfaces/auth";
+import {isEmpty} from 'lodash';
+import mongoose, {LeanDocument} from 'mongoose';
+import Auth from '@models/interfaces/auth';
+import User from '@models/interfaces/user';
+import {FacebookResponse, NewAuthData} from '@services/interfaces/auth';
 import bcrypt from 'bcryptjs'
-import logger from "../utils/logger";
+import logger from '../utils/logger';
 import jwt from 'jsonwebtoken'
-import axios from "axios";
+import axios from 'axios';
 
 export interface IUserFoundWithToken extends Omit<LeanDocument<Auth>, 'user'> {
     user?: LeanDocument<User>

@@ -1,11 +1,11 @@
-import {NextApiRequest, NextApiResponse} from "next";
-import {Response} from "@common/api/response";
-import {authPayloadSchema} from "@validators/auth";
-import {createNewAuth, generateToken, verifyAndFindUser, verifyFacebookToken} from "@services/auth";
-import isEmpty from "lodash/isEmpty";
-import {createUser, getFacebookProfilePicture} from "@services/user";
-import {serialize} from "cookie";
-import logger from "@utils/logger";
+import {NextApiRequest, NextApiResponse} from 'next';
+import {Response} from '@common/api/response';
+import {authPayloadSchema} from '@validators/auth';
+import {createNewAuth, generateToken, verifyAndFindUser, verifyFacebookToken} from '@services/auth';
+import isEmpty from 'lodash/isEmpty';
+import {createUser, getFacebookProfilePicture} from '@services/user';
+import {serialize} from 'cookie';
+import logger from '@utils/logger';
 
 export default async (req: NextApiRequest,
                       res: NextApiResponse<Response>) => {

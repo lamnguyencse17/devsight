@@ -1,9 +1,9 @@
-import {NextApiRequest, NextApiResponse} from "next";
-import {Response} from "@common/api/response";
-import logger from "@utils/logger";
-import jwt from "jsonwebtoken";
-import LocalToken from "@common/api/token";
-import {verifyTokenAndFindUser} from "@services/auth";
+import {NextApiRequest, NextApiResponse} from 'next';
+import {Response} from '@common/api/response';
+import logger from '@utils/logger';
+import jwt from 'jsonwebtoken';
+import LocalToken from '@common/api/token';
+import {verifyTokenAndFindUser} from '@services/auth';
 
 export default async (req: NextApiRequest,
                       res: NextApiResponse<Response>) => {

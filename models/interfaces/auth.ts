@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export default interface Auth extends Document {
     _id: mongoose.Types.ObjectId;

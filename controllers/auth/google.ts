@@ -1,11 +1,11 @@
-import {createNewAuth, generateToken, verifyAndFindUser} from "@services/auth";
-import isEmpty from "lodash/isEmpty";
-import {createUser} from "@services/user";
-import {serialize} from "cookie";
-import logger from "@utils/logger";
-import {NextApiRequest, NextApiResponse} from "next";
-import {Response} from "@common/api/response";
-import {OAuth2Client} from "google-auth-library";
+import {createNewAuth, generateToken, verifyAndFindUser} from '@services/auth';
+import isEmpty from 'lodash/isEmpty';
+import {createUser} from '@services/user';
+import {serialize} from 'cookie';
+import logger from '@utils/logger';
+import {NextApiRequest, NextApiResponse} from 'next';
+import {Response} from '@common/api/response';
+import {OAuth2Client} from 'google-auth-library';
 
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
