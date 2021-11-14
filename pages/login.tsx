@@ -6,17 +6,30 @@ import Script from "next/script";
 declare global {
     interface Window {
         handleGoogleAuth: (response: any) => void;
+        handleFacebookAuth: () => void;
         FB: any
     }
+}
+
+const handleGoogleAuth = async (response: any) => {
+    const result = await authenticateGoogle(response.credential)
+}
+
+const handleFacebookAuth = async () => {
+    window.FB.api('/me/permissions', (response: any) => {
+        console.log(response)
+    })
+    window.FB.api('/me', (response: any) => {
+        console.log(response)
+    })
 }
 
 const Login: NextPage = () => {
     useEffect(() => {
         window.handleGoogleAuth = handleGoogleAuth
+        window.handleFacebookAuth = handleFacebookAuth
     }, []);
-    const handleGoogleAuth = async (response: any) => {
-        const result = await authenticateGoogle(response.credential)
-    }
+
     return <>
         <div id="g_id_onload"
              data-client_id={process.env.GOOGLE_CLIENT_ID}
@@ -32,7 +45,8 @@ const Login: NextPage = () => {
              data-logo_alignment="left">
         </div>
         <div className="fb-login-button" data-width="100" data-size="large" data-button-type="login_with"
-    data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"/>
+    data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-scope="public_profile,email"
+        data-onlogin="handleFacebookAuth"/>
     </>
 }
 
